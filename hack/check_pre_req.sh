@@ -81,6 +81,15 @@ is_installed_docker() {
         'Docker version 20'
 }
 
+is_running_docker() {
+    if docker ps > /dev/null 2>&1; then
+        echo -e "\033[0;32m\xE2\x9C\x94\033[0m Docker is installed and running." 
+    else 
+        echo -e "\033[0;31mX\033[0m Docker is not running. Please ensure docker is running and execute this script again." 
+        exit 1 
+    fi
+}
+
 is_installed_go() {
     is_installed 'Go' \
         'go' \
@@ -235,6 +244,7 @@ fi
 if [ ${#programs[@]} -eq 0 ]; then
     echo "Checking pre-requisites for using KubeStellar:"
     is_installed_docker
+    is_running_docker
     is_installed_kubectl
     is_installed_kflex
     is_installed_ocm
